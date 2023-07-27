@@ -14,10 +14,19 @@
   "contributes": {
     "commands": [
       {
-        "command": "annaPrototype.helloWorld",
-        "title": "Hello World"
+        "command": "annaPrototype.showReferrer",
+        "title": "Show Referrer"
       }
-    ]
+    ],
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "annaPrototype.showReferrer",
+          "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
+          "group": "regs_tag_1_general@7"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

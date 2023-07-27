@@ -69,3 +69,6 @@ You can author your README using Visual Studio Code. Here are some useful editor
 
 **Enjoy!**
 
+## Set up Instructions
+
+* First run 'npm install' to get necessary libraries
