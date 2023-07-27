@@ -3,17 +3,13 @@ vscode extension for container related secure supply chain tools
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+The Show Referrers feature makes it easy to access and view the referrers and artifacts of a image.
 
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+![Docker extension overview](resources/readme/ezgif.com-optimize.gif)
 
 ## Requirements
+First run 'npm install' to get necessary libraries
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
 ## Extension Settings
 
@@ -28,7 +24,7 @@ This extension contributes the following settings:
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Current feature only shows referrers in the terminal and needs authenication added for a seamless use.
 
 ## Release Notes
 
