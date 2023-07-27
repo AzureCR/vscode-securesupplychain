@@ -8,7 +8,9 @@ The Show Referrers feature makes it easy to access and view the referrers and ar
 ![Docker extension overview](resources/readme/ezgif.com-optimize.gif)
 
 ## Requirements
-First run 'npm install' to get necessary libraries
+First run 'npm install' to get necessary libraries.
+
+Be sure to be logged into your Azure container registries and Docker client through terminal.
 
 
 ## Extension Settings
