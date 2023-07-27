@@ -18,12 +18,10 @@ export class TaskCommandRunnerFactory implements ICommandRunnerFactory {
     }
 
     
-    public getCommandRunner(): CommandRunner { //method that returns object commandrunner
+    public getCommandRunner(): CommandRunner { 
         return async <T>(commandResponseLike: Like<PromiseCommandResponse<T> | VoidCommandResponse>) => {
             const commandResponse = await normalizeCommandResponseLike(commandResponseLike);
-            //await executeAsTask(this.options, commandResponse.command, commandResponse.args);
             const output = await executeAsTask(this.options, commandResponse.command, commandResponse.args);
-           // console.log('Factory output:' + output);
             return output as T;
         };
     }
@@ -39,7 +37,6 @@ async function executeAsTask(options: TaskCommandRunnerOptions, command: string,
     const shellExecution = args ?
         new vscode.ShellExecution(command, args, shellExecutionOptions) : // Command is the process, and args contains arguments
         new vscode.ShellExecution(command, shellExecutionOptions); // Command is the full command line
-        //console.log('Shell execution:', shellExecution);
     const task = new vscode.Task(
         { type: 'shell' },
         options.workspaceFolder ?? vscode.TaskScope.Workspace,

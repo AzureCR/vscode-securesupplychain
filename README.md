@@ -3,7 +3,7 @@ vscode extension for container related secure supply chain tools
 
 ## Features
 
-The Show Referrers feature makes it easy to access and view the referrers and artifacts of a image.
+The Show Referrers feature makes it easy to access and view the referrers and artifacts of a image. Although the referrers will appear in the same structure as the output of the command `oras discover OCI_ARTIFACT`.
 
 ![Docker extension overview](resources/readme/ezgif.com-optimize.gif)
 
@@ -13,16 +13,18 @@ First run 'npm install' to get necessary libraries.
 Be sure to be logged into your Azure container registries and Docker client through terminal.
 
 
-## Extension Settings
+## Overview of the extension features
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### On right click
+You can access the feature by first accessing the Registries within the Docker View of vscode. Be sure to be connected to a Registry and navigate to a repository holding the desired image to show referrers. Then right click on the tag image. Select 'Show Referrer' in the menus option.
 
-For example:
+![Docker extension overview](resources/readme/showReferrerScreenshot.png)
 
-This extension contributes the following settings:
+### Getting referrers from terminal output
+The showReferrers command is then activated and a task exectuted in the terminal. Currently the output remains in the terminal but is planned to be set in a text document later on.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+![Docker extension overview](resources/readme/referrerTerminalScreenshot.png)
+
 
 ## Known Issues
 
@@ -67,6 +69,4 @@ You can author your README using Visual Studio Code. Here are some useful editor
 
 **Enjoy!**
 
-## Set up Instructions
 
-* First run 'npm install' to get necessary libraries

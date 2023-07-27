@@ -11,8 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('annaPrototype.showReferrer',
 		async (remoteTag: RemoteTagTreeItem) => {
-			const result = await showReferrer(remoteTag);
-			console.log( 'extension output:' + result);
+			await showReferrer(remoteTag);
 		}
 	));
 }
