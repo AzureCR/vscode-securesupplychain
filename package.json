@@ -1,7 +1,7 @@
 {
-  "name": "annaPrototype",
-  "displayName": "Prototype",
-  "description": "secondary extension for seeing image referrers",
+  "name": "securesupplychain",
+  "displayName": "securesupplychain",
+  "description": "securesupplychain features",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.80.0"
@@ -14,14 +14,14 @@
   "contributes": {
     "commands": [
       {
-        "command": "annaPrototype.showReferrer",
-        "title": "Show Referrer"
+        "command": "securesupplychain.showReferrers",
+        "title": "Show Referrers"
       }
     ],
     "menus": {
       "view/item/context": [
         {
-          "command": "annaPrototype.showReferrer",
+          "command": "securesupplychain.showReferrers",
           "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
           "group": "regs_tag_1_general@7"
         }

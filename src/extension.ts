@@ -9,7 +9,7 @@ interface RemoteTagTreeItem {
 
 export function activate(context: vscode.ExtensionContext) {
 
-	context.subscriptions.push(vscode.commands.registerCommand('annaPrototype.showReferrer',
+	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.showReferrers',
 		async (remoteTag: RemoteTagTreeItem) => {
 			await showReferrer(remoteTag);
 		}
