@@ -260,7 +260,7 @@ export async function spawnStreamAsync(
         //     reject(new CancellationError('Command cancelled', cancellationToken));
         // });
 
-        // Reject the promise on an error event
+        //Reject the promise on an error event
         // childProcess.on('error', (err) => {
         //     disposable.dispose();
         //     reject(err);
