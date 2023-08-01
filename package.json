@@ -1,7 +1,4 @@
 {
-  "extensionDependencies": [
-    "vscode.docker"
-  ],
   "name": "securesupplychain",
   "displayName": "securesupplychain",
   "description": "securesupplychain features",

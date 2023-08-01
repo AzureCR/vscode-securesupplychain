@@ -4,13 +4,6 @@ import { window } from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
 import { access } from 'fs/promises'; //this import accepts one argument for calling access
-import { logInToDockerCli, RegistryTreeItemBase, RemoteTagTreeItem,  registryExpectedContextValues, ext} from 'vscode-docker';
-import { IActionContext } from '@microsoft/vscode-azext-utils';
-
-export async function auth(context: IActionContext, node: RegistryTreeItemBase): Promise<void> {
-    await logInToDockerCli(context, node);
-}
-
 
 export async function showReferrer(imageTag: any): Promise<void> {
     try {
@@ -19,7 +12,7 @@ export async function showReferrer(imageTag: any): Promise<void> {
             const isWindows = os.platform() === 'win32'; //identifying if its a windows platform using os.plateform, if it is then isWindows will be true
             const homedir = os.homedir(); //getting the host computer home directory
             const orasExecutable = isWindows ? 'oras.exe' : 'oras'; //switches use of executable files. if true use oras.exe and if false use oras
-            const dirOras = path.join(homedir, 'bi', 'oras', orasExecutable); //returns the path to oras
+            const dirOras = path.join(homedir, 'bin', 'oras', orasExecutable); //returns the path to oras
 
             try {
                 await access(dirOras); // Check if the file exists, this will throw an error if the file doesn't exist
