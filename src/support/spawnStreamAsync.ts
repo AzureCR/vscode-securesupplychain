@@ -276,7 +276,7 @@ export async function spawnStreamAsync(
                 reject(new ChildProcessError(`1: Process exited due to signal ${signal}`, code, signal));
             } else { //passed unauthorized, 1 args instead of two, not found tag
                // resolve();
-               reject(new ChildProcessError(`Unauthorized access. Process exited with code ${code}`, code, signal));
+               reject(new ChildProcessError(`Process exited with code ${code}`, code, signal));
             }
         });
     });
