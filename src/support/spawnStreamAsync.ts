@@ -272,9 +272,11 @@ export async function spawnStreamAsync(
             if (code === 0) {
                 resolve();
             } else if (signal) {
-                reject(new ChildProcessError(`Process exited due to signal ${signal}`, code, signal));
+                resolve();
+                //reject(new ChildProcessError(`Process exited due to signal ${signal}`, code, signal));
             } else {
-                reject(new ChildProcessError(`Process exited with code ${code}`, code, signal));
+                resolve();
+               // reject(new ChildProcessError(`Process exited with code ${code}`, code, signal));
             }
         });
     });
