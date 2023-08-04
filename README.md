@@ -3,14 +3,14 @@ vscode extension for container related secure supply chain tools
 
 ## Features
 
-The Show Referrers feature makes it easy to access and view the referrers and artifacts of a image. Although the referrers will appear in the same structure as the output of the command `oras discover OCI_ARTIFACT`.
+The Show Referrers feature makes it easy to access and view the referrers and artifacts of a image. Although the referrers will appear in the same structure as the output of the command `oras discover <image reference>`.
 
 ![Docker extension overview](resources/readme/ezgif.com-optimize.gif)
 
 ## Requirements
 First run 'npm install' to get necessary libraries.
 
-Be sure to be logged into your Azure container registries and Docker client through terminal.
+Be sure to be logged into your Azure container registries and/or Docker client through your host computer terminal. You can use commands such as `az acr login -n <registry>` and `docker login localhost:8080`.
 
 
 ## Overview of the extension features

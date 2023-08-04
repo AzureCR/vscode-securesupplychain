@@ -3,29 +3,29 @@ import { execAsync } from '../support/execAsync';
 import { window } from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
-import { access } from 'fs/promises'; //this import accepts one argument for calling access
+import { access } from 'fs/promises'; 
 //TODO: Error Wrapping
+const errorMessage = 'ORAS not found on default path. Download ORAS or update path: ';
+const goToOrasLink = 'Download ORAS';
+const laterButton = 'Later';
+const validTag = /^[a-z0-9./_:-]+$/; 
+
 // check oras exist on user computer
 async function getOrasPath() {
-    const isWindows = os.platform() === 'win32'; //identifying if its a windows platform using os.platform, if it is then isWindows will be true
-    const homedir = os.homedir(); //getting the host computer home directory
-    const orasExecutable = isWindows ? 'oras.exe' : 'oras'; //switches use of executable files. if true use oras.exe and if false use oras
-    const dirOras = path.join(homedir, 'bin', 'oras', orasExecutable); //returns the path to oras
+    const isWindows = os.platform() === 'win32'; 
+    const homedir = os.homedir(); 
+    const orasExecutable = isWindows ? 'oras.exe' : 'oras'; 
+    const dirOras = path.join(homedir, 'bin', 'oras', orasExecutable);
 
     try {
-        await access(dirOras); // Check if the file exists, this will throw an error if the file doesn't exist
-        return dirOras; // If the file exists, return the dirOras path
+        await access(dirOras);
+        return dirOras; 
     } catch (err) {
          // Throw an error with the message
-        const errorMessage = 'ORAS not found on default path. Download ORAS or update path: ';
-        const goToOrasLink = 'Download ORAS';
-        const laterButton = 'Later';
-
         vscode.window.showInformationMessage(errorMessage, goToOrasLink, laterButton)
             .then(selection => {
                 if (selection === goToOrasLink) {
                     vscode.env.openExternal(vscode.Uri.parse('https://oras.land/docs/installation'));
-                    //TODO: include later button
                 } else if (selection === laterButton){
                    //when they choose later it closes the toast 
                 }
@@ -40,11 +40,11 @@ async function getOrasPath() {
  * sends the oras discover command to be executed, and has error handling
  * @param imageTag 
  */
-export async function showReferrer(imageTag: any): Promise<void> {
+export async function showReferrers(imageTag: any): Promise<void> {
+    //const registry = imageTag.fullTag.split('/')
+	//	await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', registry);
     try {
         const orasPath = await getOrasPath();
-
-        const validTag = /^[a-z0-9./_:-]+$/; //Repository names can only include lowercase alphanumeric characters, periods, dashes, underscores, and forward slashes. But adding a Tag gives it a colon
 
         if(validTag.test(imageTag.fullTag)){
             const exportCommand = `"${orasPath}" discover -o tree "${imageTag.fullTag}"`; //"${orasPath}"

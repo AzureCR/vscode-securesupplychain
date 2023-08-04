@@ -3,8 +3,6 @@ import * as os from 'os';
 //import * as treeKill from 'tree-kill';
 import { ShellQuotedString, ShellQuoting } from 'vscode';
 import { IShell } from './Shell';
-
-import { CancellationTokenLike } from './CancellationTokenLike';
 import { ChildProcessError } from './ChildProcessError';
 import { CommandLineArgs } from './commandLineBuilder';
 
@@ -208,17 +206,12 @@ export async function spawnStreamAsync(
     args: CommandLineArgs,
     options: StreamSpawnOptions,
 ): Promise<void> {
-    const cancellationToken = CancellationTokenLike.None; //we aren't using cancelation in options so its none
     // Force PowerShell as the default on Windows, but use the system default on
     // *nix
     const shell = options.shellProvider?.getShellOrDefault(options.shell) ?? options.shell;
 
     // If there is a shell provider, apply its quoting, otherwise just flatten arguments into strings
     const normalizedArgs: string[] = options.shellProvider?.quote(args) ?? args.map(arg => typeof arg === 'string' ? arg : arg.value);
-
-    // if (cancellationToken.isCancellationRequested) { //checks if a command is in an already canceled state
-    //     throw new CancellationError('Command cancelled', cancellationToken); //cancellationerror is a class
-    // }
 
     if (options.onCommand) {
         options.onCommand([command, ...normalizedArgs].join(' '));
@@ -247,28 +240,8 @@ export async function spawnStreamAsync(
     }
 
     return new Promise<void>((resolve, reject) => {
-        // const disposable = cancellationToken.onCancellationRequested(() => {
-        //     disposable.dispose();
-        //     options.stdOutPipe?.end();
-        //     options.stdErrPipe?.end();
-        //     childProcess.removeAllListeners();
-
-        //     // if (childProcess.pid) {
-        //     //     treeKill(childProcess.pid);
-        //     // }
-
-        //     reject(new CancellationError('Command cancelled', cancellationToken));
-        // });
-
-        //Reject the promise on an error event
-        // childProcess.on('error', (err) => {
-        //     disposable.dispose();
-        //     reject(err);
-        // });
-
         // Complete the promise when the process exits
         childProcess.on('exit', (code, signal) => {
-            //disposable.dispose();
             if (code === 0) {
                 resolve();
             } else if (signal) {
