@@ -2,18 +2,18 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { showReferrers } from './commands/showReferrer';
-//import {logInToDockerCli} from 'ms-azuretools.vscode-docker';
 
 /**  This interface declares that any object of type IremoteTreeItem should have a 
  * fullTag property of type string. It defines the type of an object that 
  * is expected to be passed to our command async callback function.
  */  
-interface IRemoteTagTreeItem {
+export interface IRemoteTagTreeItem {
 	readonly fullTag: string;
+	readonly parent: any;
 }
 
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext ) {
 /** Registering the command with id 'securesupplychain.showReferrers' and giving it a async callback function
  * that takes parameter named remoteTag which will be an object conforming to IremoteTagTreeItem interface.
  */

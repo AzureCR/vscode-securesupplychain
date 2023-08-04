@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { IActionContext } from '@microsoft/vscode-azext-utils';
 import { execAsync } from '../support/execAsync';
 import { window } from 'vscode';
 import * as os from 'os';
@@ -21,7 +22,6 @@ async function getOrasPath() {
         await access(dirOras);
         return dirOras; 
     } catch (err) {
-         // Throw an error with the message
         vscode.window.showInformationMessage(errorMessage, goToOrasLink, laterButton)
             .then(selection => {
                 if (selection === goToOrasLink) {
@@ -34,15 +34,37 @@ async function getOrasPath() {
         throw new Error();
     }
 }
+/**
+ * an interface that builds the method getDockerCLiCredentials and returns object type any
+ * we need this to mimic the Docker extensions logInToDockerCli code : node.getDockerCliCredentials because we
+ * can't get the function itself through the instance we recieve we only get types.
+ */
+interface IAuthentication {
+    getDockerCliCredentials : () => any; 
+}
+
 
 /**
- * showReferrer calls getOrasPath, checks that an image tag has only the valid characters it needs, 
+ * showReferrer logs into docker cli, calls getOrasPath, checks that an image tag has only the valid characters it needs, 
  * sends the oras discover command to be executed, and has error handling
  * @param imageTag 
  */
 export async function showReferrers(imageTag: any): Promise<void> {
-    //const registry = imageTag.fullTag.split('/')
-	//	await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', registry);
+    /**
+     * loginProvider is an object of type IAuthentication and contains the async method getDockerCliCredentials
+     * which builds the node of the RegistryTreeItemBase out of the object from imageTag.parent,
+     * then awaiting the return of the nodes authHelper which holds the function getDockerCLiCredentials taking parameters of
+     * the node cachedProvider and node authContext. These returned items are then run through the Dockers logInToDockerCli as
+     * the login credentials.
+     */
+    let loginProvider  : IAuthentication = {
+        getDockerCliCredentials : async () => {
+            let node = imageTag.parent;
+            return await node.authHelper.getDockerCliCredentials(node.cachedProvider, node.authContext);
+        }}; 
+	await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', loginProvider);
+
+
     try {
         const orasPath = await getOrasPath();
 
