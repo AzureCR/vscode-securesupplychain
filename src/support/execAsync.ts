@@ -1,14 +1,24 @@
+// https://github.com/microsoft/vscode-docker/blob/main/src/utils/execAsync.ts
 import * as stream from 'stream';
-import { AccumulatorStream} from './AccumulatorStream';
-import {spawnStreamAsync, StreamSpawnOptions, Shell } from './spawnStreamAsync';
+import { AccumulatorStream, Shell, spawnStreamAsync, StreamSpawnOptions } from '@microsoft/vscode-container-client';
+import * as cp from 'child_process';
+import { CancellationToken } from 'vscode';
 
 type Progress = (content: string, err: boolean) => void;
 
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+export type ExecError = Error & { code: any, signal: any, stdErrHandled: boolean };
+
 export type ExecAsyncOutput = { stdout: string, stderr: string };
 
-export async function execAsync(command: string, progress?: Progress): Promise<ExecAsyncOutput> {
-    const stdoutFinal = new AccumulatorStream(); /** this class: This can be useful for capturing and processing the output of asynchronous operations and handling the data once it is available. */
+export async function execAsync(command: string, options?: cp.ExecOptions & { stdin?: string, cancellationToken?: CancellationToken }, progress?: Progress): Promise<ExecAsyncOutput> {
+    const stdoutFinal = new AccumulatorStream();
     const stderrFinal = new AccumulatorStream();
+
+    let stdinPipe: stream.Readable | undefined;
+    if (options?.stdin) {
+        stdinPipe = stream.Readable.from(options.stdin);
+    }
 
     let stdoutIntermediate: stream.PassThrough | undefined;
     let stderrIntermediate: stream.PassThrough | undefined;
@@ -35,8 +45,10 @@ export async function execAsync(command: string, progress?: Progress): Promise<E
     }
 
     const spawnOptions: StreamSpawnOptions = {
+        ...options,
         shell: true,
         shellProvider: Shell.getShellOrDefault(),
+        stdInPipe: stdinPipe,
         stdOutPipe: stdoutIntermediate ?? stdoutFinal,
         stdErrPipe: stderrIntermediate ?? stderrFinal,
     };

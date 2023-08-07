@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { IActionContext } from '@microsoft/vscode-azext-utils';
 import { execAsync } from '../support/execAsync';
 import { window } from 'vscode';
 import * as os from 'os';

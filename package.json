@@ -1,5 +1,7 @@
-{ "extensionDependencies": ["ms-azuretools.vscode-docker"]  ,
-  "dependencies": {"@microsoft/vscode-azext-utils": "^1.2.2"},
+{ "extensionDependencies": ["ms-azuretools.vscode-docker"],
+  "dependencies":{
+    "@microsoft/vscode-container-client": "^0.1.0"
+  },
   "name": "securesupplychain",
   "displayName": "securesupplychain",
   "description": "securesupplychain features",

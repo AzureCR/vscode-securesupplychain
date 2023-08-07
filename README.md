@@ -5,7 +5,7 @@ The expanded extension will create a text document within vscode listing an imag
 
 ### User Experience:
 #### On right click
-Users can access the feature by first navigating to the Registries panel within the Docker View of vscode. Be sure to be logged into a Registry and go to a repository holding the desired image to show referrers. 
+Users can access the feature by first navigating to the Registries panel within the Docker View of vscode. 
 
 ![Alt text](<resources/readme/commandGuide.png>)
 
@@ -13,7 +13,7 @@ Then right click on the tag image. Select 'Show Referrer' in the menus option.
 
 ![Alt text](resources/readme/showReferrerScreenshot.png)
 
-The command `oras discover -o tree $IMAGE` is then executed and the referrer output tree is put into a text document to be read by the user.
+The user is logged into the docker cli and the command `oras discover -o tree $IMAGE` is then executed and the referrer output tree is put into a text document to be read by the user.
 
 ![Alt text](resources/readme/textDoc.png)
 
