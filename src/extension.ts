@@ -19,11 +19,11 @@ export function activate(context: vscode.ExtensionContext ) {
  */
 	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.showReferrers',
 		async (remoteTag: IRemoteTagTreeItem) => { /** When a user interacts with the docker UI and triggers the command, 
-		the docker class RemoteTagTreeItem passes an instance of itself as a parameter to the command callback function in this extension. 
-		This then gives us access to the properties and methods that are received from the RemoteTagTreeItem instance,
-		we take the fullTag property since our interface has specified the expected shape of the object passed into the
+		the docker extension passes an instance of itself as a parameter to the command callback function in this extension. 
+		This then gives us access to the properties and methods that are received and
+		we take the fullTag and parent property since our interface has specified the expected shape of the object passed into the
 		parameter. */
-			await showReferrers(remoteTag); //we then send that object our showReferrer function and wait for it to complete.
+			await showReferrers(remoteTag); 
 		}
 	));
 }
