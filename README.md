@@ -1,34 +1,45 @@
 # vscode-securesupplychain
 vscode extension for container related secure supply chain tools
+## Adding New Capabilities to the Existing Docker VS Code Extension
+The expanded extension will create a text document within vscode listing an image's referrers. Accessing the referrers is done through the ORAS CLI.
 
-## Features
+### User Experience:
+#### On right click
+Users can access the feature by first navigating to the Registries panel within the Docker View of vscode. Be sure to be logged into a Registry and go to a repository holding the desired image to show referrers. 
 
-The Show Referrers feature makes it easy to access and view the referrers and artifacts of a image. Although the referrers will appear in the same structure as the output of the command `oras discover <image reference>`.
+![Alt text](<resources/readme/commandGuide.png>)
 
-![Docker extension overview](resources/readme/ezgif.com-optimize.gif)
+Then right click on the tag image. Select 'Show Referrer' in the menus option.
 
-## Requirements
-First run 'npm install' to get necessary libraries.
+![Alt text](resources/readme/showReferrerScreenshot.png)
 
-Be sure to be logged into your Azure container registries and/or Docker client through your host computer terminal. You can use commands such as `az acr login -n <registry>` and `docker login localhost:8080`.
+The command `oras discover -o tree $IMAGE` is then executed and the referrer output tree is put into a text document to be read by the user.
 
+![Alt text](resources/readme/textDoc.png)
 
-## Overview of the extension features
+#### To Do:
+ - When an image has no referrers the tree only shows the root image. This is confusing to see as a user and needs to be fixed to instead tell the user no referrers were found for this image.
+ - Determine a universal way to access the oras executable without specifying the file path to the command line.
 
-### On right click
-You can access the feature by first accessing the Registries within the Docker View of vscode. Be sure to be connected to a Registry and navigate to a repository holding the desired image to show referrers. Then right click on the tag image. Select 'Show Referrer' in the menus option.
+### Setting up the feature:
+- Prerequisites
+    - Download ORAS Library
+    - Have Docker extension and Docker Desktop installed
 
-![Docker extension overview](resources/readme/showReferrerScreenshot.png)
+### Coding the feature:
+-   To implement the image referrer feature, we will replicate the current Docker [commands](https://github.com/microsoft/vscode-docker/tree/main/src/commands) structure for registry items. The coding will follow a clear pattern: defining the command seen in the menu, handling the event triggering, and executing the CLI command. Instead of relying on the Docker CLI, this feature will leverage the ORAS CLI to retrieve image referrers.
+    - The ORAS CLI already has a built-in referrer function, which can be invoked using the command: `oras discover -o tree $IMAGE`. When executed, this command generates a graph of artifacts, with the signature and documentation viewed as children of the container image.
+    ![Alt text](resources/readme/CLIExample.png)
 
-### Getting referrers from terminal output
-The showReferrers command is then activated and a task exectuted in the terminal. Currently the output remains in the terminal but is planned to be set in a text document later on.
-
-![Docker extension overview](resources/readme/referrerTerminalScreenshot.png)
-
+### Design:
+- It will be implemented as a secondary extension dependant on the VScode Docker extension. 
+- The secondary extension will activated at the following event: when the user clicks on the "Show Referrers" menus option.
+- The referrer list will then be presented as a text document displaying the output of the oras discover command.
+- There will need to be added commands to the Docker Extension so that the "Show Referrers" is presented as an option in the menus and so that docker logs the user into their docker cli. This login is important since both docker and oras store credentials in the same config.json file on an individuals operating system, then if docker cli is logged in then so is the oras cli. 
 
 ## Known Issues
 
-Current feature only shows referrers in the terminal and needs authenication added for a seamless use.
+When a image has no referrers the displayed text doc can be initally confusing to look at.
 
 ## Release Notes
 
@@ -47,26 +58,4 @@ Fixed issue #.
 Added features X, Y, and Z.
 
 ---
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
-
 
