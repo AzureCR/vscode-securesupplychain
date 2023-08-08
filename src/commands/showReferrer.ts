@@ -81,6 +81,6 @@ export async function showReferrers(imageTag: any): Promise<void> {
             }
         }  
     } catch (err) {
-        window.showErrorMessage(''+err);
+        window.showErrorMessage('Error tag not found');
     }
 }
