@@ -10,7 +10,7 @@ const goToOrasButton = 'Download ORAS';
 const laterButton = 'Later';
 const validTag = /^[a-z0-9./_:-]+$/; 
 
-// check oras exist on user computer
+// check that oras exists on user computer. Using a tuple the path will be the configured oras directory and the bool will be a boolean that states if the path exists (true) or doesn't (false).
 async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]> {
     const isWindows = os.platform() === 'win32'; 
     const homedir = os.homedir(); 
@@ -25,8 +25,6 @@ async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]
             .then(selection => {
                 if (selection === goToOrasButton) {
                     vscode.env.openExternal(vscode.Uri.parse('https://oras.land/docs/installation'));
-                } else if (selection === laterButton){
-                   //when they choose later it closes the toast 
                 }
             });
             return [dirOras, false];
@@ -42,12 +40,11 @@ interface IAuthentication {
 }
 
 /**
- * showReferrer logs into docker cli, calls getOrasPath, checks that an image tag has only the valid characters it needs, 
- * sends the oras discover command to be executed, and has error handling
- * @param imageTag 
+ * showReferrer lists referrers for a given tag in a separate vscode window
  */
 export async function showReferrers(imageTag: any): Promise<void> {
     /**
+     *  https://github.com/microsoft/vscode-docker/blob/main/src/commands/registries/logInToDockerCli.ts
      * loginProvider is an object of type IAuthentication and contains the async method getDockerCliCredentials
      * which builds the node of the RegistryTreeItemBase out of the object from imageTag.parent,
      * then awaiting the return of the nodes authHelper, which holds the function getDockerCLiCredentials takes parameters of
@@ -59,7 +56,7 @@ export async function showReferrers(imageTag: any): Promise<void> {
             let node = imageTag.parent;
             return await node.authHelper.getDockerCliCredentials(node.cachedProvider, node.authContext);
         }}; 
-	await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', loginProvider);
+	    await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', loginProvider);
 
     const orasPathTuple= await getOrasPath(path, true);
     const orasPath= orasPathTuple[0];
@@ -82,6 +79,6 @@ export async function showReferrers(imageTag: any): Promise<void> {
             }
         }  
     } catch (err) {
-        window.showErrorMessage("Error: tag not found");
+        window.showErrorMessage(''+err);
     }
 }

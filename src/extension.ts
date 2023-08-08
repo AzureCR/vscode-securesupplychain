@@ -1,9 +1,7 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { showReferrers } from './commands/showReferrer';
 
-/**  This interface declares that any object of type IremoteTreeItem should have a 
+/**  This interface declares that any object of type IRemoteTreeItem should have a 
  * fullTag property of type string. It defines the type of an object that 
  * is expected to be passed to our command async callback function.
  */  
@@ -14,9 +12,6 @@ export interface IRemoteTagTreeItem {
 
 
 export function activate(context: vscode.ExtensionContext ) {
-/** Registering the command with id 'securesupplychain.showReferrers' and giving it a async callback function
- * that takes parameter named remoteTag which will be an object conforming to IremoteTagTreeItem interface.
- */
 	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.showReferrers',
 		async (remoteTag: IRemoteTagTreeItem) => { /** When a user interacts with the docker UI and triggers the command, 
 		the docker extension passes an instance of itself as a parameter to the command callback function in this extension. 
