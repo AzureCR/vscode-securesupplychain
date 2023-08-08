@@ -25,6 +25,8 @@ async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]
             .then(selection => {
                 if (selection === goToOrasButton) {
                     vscode.env.openExternal(vscode.Uri.parse('https://oras.land/docs/installation'));
+                } else if (selection === laterButton) {
+                    //exits toast
                 }
             });
             return [dirOras, false];
