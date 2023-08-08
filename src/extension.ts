@@ -6,7 +6,9 @@ import { showReferrers } from './commands/showReferrer';
  * are expected to be passed to the command async callback function.
  */  
 export interface IRemoteTagTreeItem {
+	//the tag of an image thats passed to the oras command
 	readonly fullTag: string;
+	//the node of an image passed to get login credentials
 	readonly parent: any;
 }
 

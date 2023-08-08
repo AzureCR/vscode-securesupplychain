@@ -5,18 +5,19 @@ import * as os from 'os';
 import * as path from 'path';
 import { access } from 'fs/promises'; 
 
-const errorMessage = 'ORAS not found on default path "C:\\Users\\userName\\bin\\oras". Download ORAS or update path: ';
 const goToOrasButton = 'Download ORAS';
 const validTag = /^[a-z0-9./_:-]+$/; 
+const orasURL = 'https://oras.land/docs/installation';
 
 /* checks that oras exists on user computer through building a default path and checking 
  * the path exists. Path is the configured oras directory and bool states if the path exists (true) or doesn't (false).
  */
 async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]> {
-    const isWindows = os.platform() === 'win32'; 
-    const homedir = os.homedir(); 
-    const orasExecutable = isWindows ? 'oras.exe' : 'oras'; 
-    const dirOras = path.join(homedir, 'bin', 'oras', orasExecutable);
+    var isWindows = os.platform() === 'win32'; 
+    var homedir = os.homedir(); 
+    var orasExecutable = isWindows ? 'oras.exe' : 'oras'; 
+    var dirOras = path.join(homedir, 'bin', 'oras', orasExecutable);
+    var errorMessage = `ORAS not found on default path "${dirOras}". Download ORAS or update path: `;
 
         try {
             await access(dirOras);
@@ -25,7 +26,7 @@ async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]
             vscode.window.showInformationMessage(errorMessage, goToOrasButton)
             .then(selection => {
                 if (selection === goToOrasButton) {
-                    vscode.env.openExternal(vscode.Uri.parse('https://oras.land/docs/installation'));
+                    vscode.env.openExternal(vscode.Uri.parse(orasURL));
                 } 
             });
             return [dirOras, false];
@@ -60,15 +61,15 @@ export async function showReferrers(imageTag: any): Promise<void> {
         }}; 
 	    await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', loginProvider);
 
-    const orasPathTuple= await getOrasPath(path, true);
-    const orasPath= orasPathTuple[0];
-    const orasExists= orasPathTuple[1];
+    var orasPathTuple = await getOrasPath(path, true);
+    var orasPath = orasPathTuple[0];
+    var orasExists = orasPathTuple[1];
 
     try {
         if(orasExists) {
             if (validTag.test(imageTag.fullTag)){
-                const exportCommand = `"${orasPath}" discover -o tree "${imageTag.fullTag}"`; 
-                const output = await execAsync(exportCommand)
+                var exportCommand = `"${orasPath}" discover -o tree "${imageTag.fullTag}"`; 
+                var output = await execAsync(exportCommand)
 
                 if(!output.stderr){
                     vscode.workspace.openTextDocument({ content: output.stdout }).then(doc => {
