@@ -5,7 +5,7 @@ import * as os from 'os';
 import * as path from 'path';
 import { access } from 'fs/promises'; 
 
-const errorMessage = 'ORAS not found on default path. Download ORAS or update path: ';
+const errorMessage = 'ORAS not found on default path "C:\\Users\\userName\\bin\\oras". Download ORAS or update path: ';
 const goToOrasButton = 'Download ORAS';
 const validTag = /^[a-z0-9./_:-]+$/; 
 
