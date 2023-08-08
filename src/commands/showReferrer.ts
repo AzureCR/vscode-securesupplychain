@@ -9,7 +9,9 @@ const errorMessage = 'ORAS not found on default path. Download ORAS or update pa
 const goToOrasButton = 'Download ORAS';
 const validTag = /^[a-z0-9./_:-]+$/; 
 
-// checks that oras exists on user computer. Path is the configured oras directory and bool states if the path exists (true) or doesn't (false).
+/* checks that oras exists on user computer through building a default path and checking 
+ * the path exists. Path is the configured oras directory and bool states if the path exists (true) or doesn't (false).
+ */
 async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]> {
     const isWindows = os.platform() === 'win32'; 
     const homedir = os.homedir(); 
