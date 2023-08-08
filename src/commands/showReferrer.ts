@@ -46,8 +46,8 @@ export async function showReferrers(imageTag: any): Promise<void> {
      *  https://github.com/microsoft/vscode-docker/blob/main/src/commands/registries/logInToDockerCli.ts
      *  https://github.com/microsoft/vscode-docker/blob/main/src/tree/registries/dockerV2/DockerV2RegistryTreeItemBase.ts#L64
      * loginProvider is an object of type IAuthentication and contains the async method getDockerCliCredentials
-     * which builds the node of the RegistryTreeItemBase out of the object from imageTag.parent,
-     * then awaiting the return of the nodes authHelper, which holds the function getDockerCLiCredentials takes parameters of
+     * which builds the node of the RegistryTreeItemBase out of the object from imageTag.parent.
+     * Then awaits the return of the nodes authHelper, which holds the function getDockerCLiCredentials and takes parameters of
      * the node cachedProvider and node authContext. These returned items are then run through the Dockers logInToDockerCli as
      * the login credentials.
      */
