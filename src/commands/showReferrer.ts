@@ -7,7 +7,6 @@ import { access } from 'fs/promises';
 
 const errorMessage = 'ORAS not found on default path. Download ORAS or update path: ';
 const goToOrasButton = 'Download ORAS';
-const laterButton = 'Later';
 const validTag = /^[a-z0-9./_:-]+$/; 
 
 // check that oras exists on user computer. Using a tuple the path will be the configured oras directory and the bool will be a boolean that states if the path exists (true) or doesn't (false).
@@ -21,13 +20,11 @@ async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]
             await access(dirOras);
             return [dirOras , true];
         } catch {
-            vscode.window.showInformationMessage(errorMessage, goToOrasButton, laterButton)
+            vscode.window.showInformationMessage(errorMessage, goToOrasButton)
             .then(selection => {
                 if (selection === goToOrasButton) {
                     vscode.env.openExternal(vscode.Uri.parse('https://oras.land/docs/installation'));
-                } else if (selection === laterButton) {
-                    //exits toast
-                }
+                } 
             });
             return [dirOras, false];
         } 
