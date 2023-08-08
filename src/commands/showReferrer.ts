@@ -9,7 +9,7 @@ const errorMessage = 'ORAS not found on default path. Download ORAS or update pa
 const goToOrasButton = 'Download ORAS';
 const validTag = /^[a-z0-9./_:-]+$/; 
 
-// check that oras exists on user computer. Using a tuple the path will be the configured oras directory and the bool will be a boolean that states if the path exists (true) or doesn't (false).
+// checks that oras exists on user computer. Path is the configured oras directory and bool states if the path exists (true) or doesn't (false).
 async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]> {
     const isWindows = os.platform() === 'win32'; 
     const homedir = os.homedir(); 
@@ -30,8 +30,8 @@ async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]
         } 
 }
 /**
- * an interface that builds the method getDockerCLiCredentials and returns object type any
- * we need this to mimic the Docker extensions logInToDockerCli code : node.getDockerCliCredentials because we
+ * an interface that builds the method getDockerCLiCredentials and returns object type any.
+ * We need this to mimic the Docker extensions logInToDockerCli code : node.getDockerCliCredentials because we
  * can't get the function itself through the instance of the docker extension.
  */
 interface IAuthentication {
@@ -39,7 +39,7 @@ interface IAuthentication {
 }
 
 /**
- * showReferrer lists referrers for a given tag in a separate vscode window
+ * lists referrers for a given tag in a separate vscode window.
  */
 export async function showReferrers(imageTag: any): Promise<void> {
     /**

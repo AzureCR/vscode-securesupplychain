@@ -1,4 +1,6 @@
-{ "extensionDependencies": ["ms-azuretools.vscode-docker"],
+{ "extensionDependencies": [
+  "ms-azuretools.vscode-docker"
+],
   "dependencies":{
     "@microsoft/vscode-container-client": "^0.1.0"
   },
