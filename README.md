@@ -19,12 +19,12 @@ The user is logged into the docker cli and the command `oras discover -o tree $I
 
 #### To Do:
  - When an image has no referrers the tree only shows the root image. This is confusing to see as a user and needs to be fixed to instead tell the user no referrers were found for this image.
- - Determine a universal way to access the oras executable without specifying the file path to the command line.
 
 ### Setting up the feature:
 - Prerequisites
     - Download ORAS Library
     - Have Docker extension and Docker Desktop installed
+    - The directory which contains the oras executable/binary should be added to the user's path environment variable.
 
 ### Coding the feature:
 -   To implement the image referrer feature, we will replicate the current Docker [commands](https://github.com/microsoft/vscode-docker/tree/main/src/commands) structure for registry items. The coding will follow a clear pattern: defining the command seen in the menu, handling the event triggering, and executing the CLI command. Instead of relying on the Docker CLI, this feature will leverage the ORAS CLI to retrieve image referrers.

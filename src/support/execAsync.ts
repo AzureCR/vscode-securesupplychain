@@ -1,6 +1,7 @@
 // https://github.com/microsoft/vscode-docker/blob/main/src/utils/execAsync.ts
 import * as stream from 'stream';
-import { AccumulatorStream, Shell, spawnStreamAsync, StreamSpawnOptions } from '@microsoft/vscode-container-client';
+import { AccumulatorStream, Shell, StreamSpawnOptions } from '@microsoft/vscode-container-client';
+import { spawnStreamAsync } from './spawnStreamAsync';
 import * as cp from 'child_process';
 import { CancellationToken } from 'vscode';
 

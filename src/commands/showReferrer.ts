@@ -9,27 +9,25 @@ const goToOrasButton = 'Download ORAS';
 const validTag = /^[a-z0-9./_:-]+$/; 
 const orasURL = 'https://oras.land/docs/installation';
 
-/* checks that oras exists on user computer through building a default path and checking 
- * the path exists. Path is the configured oras directory and bool states if the path exists (true) or doesn't (false).
- */
-async function getOrasPath(path: any, bool : boolean): Promise<[string, boolean]> {
-    var isWindows = os.platform() === 'win32'; 
-    var homedir = os.homedir(); 
-    var orasExecutable = isWindows ? 'oras.exe' : 'oras'; 
-    var dirOras = path.join(homedir, 'bin', 'oras', orasExecutable);
-    var errorMessage = `ORAS not found on default path "${dirOras}". Download ORAS or update path: `;
+// checks that oras exists on user computer through sending a dummy command. Based on the output exists we return a bool
+async function checkOras(): Promise<boolean> {
+    var errorMessage = `oras executable/binary not user's path environment variable. Download ORAS or update path: `;
 
         try {
-            await access(dirOras);
-            return [dirOras , true];
+            var result = await execAsync('oras -h');
+            if (result.stderr){
+                throw new Error;
+            }else{
+            return true ;
+            }
         } catch {
-            vscode.window.showInformationMessage(errorMessage, goToOrasButton)
+            vscode.window.showErrorMessage(errorMessage, goToOrasButton)
             .then(selection => {
                 if (selection === goToOrasButton) {
                     vscode.env.openExternal(vscode.Uri.parse(orasURL));
                 } 
             });
-            return [dirOras, false];
+            return false;
         } 
 }
 /**
@@ -61,27 +59,24 @@ export async function showReferrers(imageTag: any): Promise<void> {
         }}; 
 	    await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', loginProvider);
 
-    var orasPathTuple = await getOrasPath(path, true);
-    var orasPath = orasPathTuple[0];
-    var orasExists = orasPathTuple[1];
+    var orasPath = await checkOras();
 
-    try {
-        if(orasExists) {
-            if (validTag.test(imageTag.fullTag)){
-                var exportCommand = `"${orasPath}" discover -o tree "${imageTag.fullTag}"`; 
-                var output = await execAsync(exportCommand)
+    if(orasPath) {
+        if (validTag.test(imageTag.fullTag)){
+            var exportCommand = `oras discover -o tree "${imageTag.fullTag}"`; 
+            var output = await execAsync(exportCommand)
 
-                if(!output.stderr){
-                    vscode.workspace.openTextDocument({ content: output.stdout }).then(doc => {
-                    // Show the newly created document in the editor
-                    vscode.window.showTextDocument(doc);
-                    });
-                }
-            }else{
-                window.showErrorMessage('Invalid Tag provided');
+            if(!output.stderr){
+                vscode.workspace.openTextDocument({ content: output.stdout }).then(doc => {
+                // Show the newly created document in the editor
+                vscode.window.showTextDocument(doc);
+                });
+            } else {
+                window.showErrorMessage(output.stderr);
             }
-        }  
-    } catch (err) {
-        window.showErrorMessage('Error tag not found');
-    }
+        }else{
+            window.showErrorMessage('Invalid Tag provided');
+        }
+    }  
+    
 }
