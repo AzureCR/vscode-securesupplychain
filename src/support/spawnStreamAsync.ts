@@ -2,7 +2,7 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-
+//https://github.com/microsoft/vscode-docker-extensibility/blob/main/packages/vscode-container-client/src/utils/spawnStreamAsync.ts
 import { spawn, SpawnOptions } from 'child_process';
 import * as os from 'os';
 import * as treeKill from 'tree-kill';
