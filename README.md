@@ -38,7 +38,6 @@ The user is logged into the docker cli and the command `oras discover -o tree $I
 - It will be implemented as a secondary extension dependant on the VScode Docker extension. 
 - The secondary extension will activated at the following event: when the user clicks on the "Show Referrers" menus option.
 - The referrer list will then be presented as a text document displaying the output of the oras discover command.
-- There will need to be added commands to the Docker Extension so that the "Show Referrers" is presented as an option in the menus and so that docker logs the user into their docker cli. This login is important since both docker and oras store credentials in the same config.json file on an individuals operating system, then if docker cli is logged in then so is the oras cli. 
 
 ## Known Issues
 
