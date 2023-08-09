@@ -1,27 +1,25 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { showReferrers } from './commands/showReferrer';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "annaPrototype" is now active!');
-
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('annaPrototype.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Prototype!');
-	});
-
-	context.subscriptions.push(disposable);
+/**  This interface declares that any object of type IRemoteTreeItem should have a 
+ * fullTag property of type string and parent of type any. It defines the objects that 
+ * are expected to be passed to the command async callback function.
+ */  
+export interface IRemoteTagTreeItem {
+	//the tag of an image thats passed to the oras command
+	readonly fullTag: string;
+	//the node of an image passed to get login credentials
+	readonly parent: any;
 }
 
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export function activate(context: vscode.ExtensionContext ) {
+	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.showReferrers',
+		async (remoteTag: IRemoteTagTreeItem) => { /** When a user interacts with the docker UI and triggers the command, 
+		the docker extension passes an instance of itself as a parameter to the command callback function in this extension. 
+		This then gives us access to the properties and methods that are received and
+		we take the fullTag and parent property. */
+			await showReferrers(remoteTag); 
+		}
+	));
+}

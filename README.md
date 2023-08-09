@@ -1,34 +1,47 @@
 # vscode-securesupplychain
 vscode extension for container related secure supply chain tools
+## Adding New Capabilities to the Existing Docker VS Code Extension
+The expanded extension will create a text document within vscode listing an image's referrers. Accessing the referrers is done through the ORAS CLI.
 
-## Features
+### User Experience:
+#### On right click
+Users can access the feature by first navigating to the Registries panel within the Docker View of vscode. 
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+![Alt text](<resources/readme/commandGuide.png>)
 
-For example if there is an image subfolder under your extension project workspace:
+Then right click on the tag image. Select 'Show Referrer' in the menus option.
 
-\!\[feature X\]\(images/feature-x.png\)
+![Alt text](resources/readme/showReferrerScreenshot.png)
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+The user is logged into the docker cli and the command `oras discover -o tree $IMAGE` is then executed and the referrer output tree is put into a text document to be read by the user.
 
-## Requirements
+![Alt text](resources/readme/textDoc.png)
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+#### To Do:
+ - When an image has no referrers the tree only shows the root image. This is confusing to see as a user and needs to be fixed to instead tell the user no referrers were found for this image.
 
-## Extension Settings
+### Setting up the feature:
+- Prerequisites
+    - Download ORAS Library
+    - Have Docker extension and Docker Desktop installed
+    - The directory which contains the oras executable/binary should be added to the user's path environment variable.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+### Coding the feature:
+-   To implement the image referrer feature, we will replicate the current Docker [commands](https://github.com/microsoft/vscode-docker/tree/main/src/commands) structure for registry items. The coding will follow a clear pattern: defining the command seen in the menu, handling the event triggering, and executing the CLI command. Instead of relying on the Docker CLI, this feature will leverage the ORAS CLI to retrieve image referrers.
+    - The ORAS CLI already has a built-in referrer function, which can be invoked using the command: `oras discover -o tree $IMAGE`. When executed, this command generates a graph of artifacts, with the signature and documentation viewed as children of the container image.
+    ![Alt text](resources/readme/CLIExample.png)
+- We check that oras is downloaded through sending a dummy command. If the command errors we responsed with an error message stating `oras executable/binary not user's path environment variable. Download ORAS or update path:` and providing a link to the oras installation page.
+- For authentication the Docker extension's logInToDockerCli function was imported into the feature and we coded a replica of the getDockerCliCredentials function so that the login credentials are passed accordingly.
+- Then the oras discover command is executed with the selected image and once successful a text document with the referrer treeview is generated as a vscode window.
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+### Design:
+- It will be implemented as a secondary extension dependant on the VScode Docker extension. 
+- The secondary extension will activated at the following event: when the user clicks on the "Show Referrers" menus option.
+- The referrer list will then be presented as a text document displaying the output of the oras discover command.
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+When a image has no referrers the displayed text doc can be initally confusing to look at.
 
 ## Release Notes
 
@@ -47,25 +60,4 @@ Fixed issue #.
 Added features X, Y, and Z.
 
 ---
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
 
