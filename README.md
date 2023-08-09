@@ -30,6 +30,9 @@ The user is logged into the docker cli and the command `oras discover -o tree $I
 -   To implement the image referrer feature, we will replicate the current Docker [commands](https://github.com/microsoft/vscode-docker/tree/main/src/commands) structure for registry items. The coding will follow a clear pattern: defining the command seen in the menu, handling the event triggering, and executing the CLI command. Instead of relying on the Docker CLI, this feature will leverage the ORAS CLI to retrieve image referrers.
     - The ORAS CLI already has a built-in referrer function, which can be invoked using the command: `oras discover -o tree $IMAGE`. When executed, this command generates a graph of artifacts, with the signature and documentation viewed as children of the container image.
     ![Alt text](resources/readme/CLIExample.png)
+- We check that oras is downloaded through sending a dummy command. If the command errors we responsed with an error message stating `oras executable/binary not user's path environment variable. Download ORAS or update path:` and providing a link to the oras installation page.
+- For authentication the Docker extension's logInToDockerCli function was imported into the feature and we coded a replica of the getDockerCliCredentials function so that the login credentials are passed accordingly.
+- Then the oras discover command is executed with the selected image and once successful a text document with the referrer treeview is generated as a vscode window.
 
 ### Design:
 - It will be implemented as a secondary extension dependant on the VScode Docker extension. 
