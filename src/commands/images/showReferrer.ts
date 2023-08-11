@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { execAsync } from '../support/execAsync';
+import { execAsync } from '../../support/execAsync';
 import { window } from 'vscode';
 import * as os from 'os';
 import * as path from 'path';
@@ -64,7 +64,7 @@ export async function showReferrers(imageTag: any): Promise<void> {
     if(orasPath) {
         if (validTag.test(imageTag.fullTag)){
             var exportCommand = `oras discover -o tree "${imageTag.fullTag}"`; 
-            var output = await execAsync(exportCommand)
+            var output = await execAsync(exportCommand);
 
             if(!output.stderr){
                 vscode.workspace.openTextDocument({ content: output.stdout }).then(doc => {
