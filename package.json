@@ -31,8 +31,12 @@
           "title": "Show Referrers"
         },
         {
+          "command": "securesupplychain.allKeys",
+          "title": "Signing keys list"
+        },
+        {
           "command": "securesupplychain.defaultKey",
-          "title": "Sign with default key"
+          "title": "Sign with default Key"
         }
       ],
       "menus": {
@@ -51,6 +55,9 @@
         "sign.options":[
           {
             "command": "securesupplychain.defaultKey"
+          },
+          {
+            "command": "securesupplychain.allKeys"
           }
         ]
       }
