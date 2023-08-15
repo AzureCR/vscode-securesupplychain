@@ -3,18 +3,6 @@ import { showReferrers } from './commands/images/showReferrer';
 import { registerCommands } from './commands/registerCommands';
 import { IRemoteTagTreeItem } from './utils/DockerInstances';
 
-/**  This interface declares that any object of type IRemoteTreeItem should have a 
- * fullTag property of type string and parent of type any. It defines the objects that 
- * are expected to be passed to the command async callback function.
- */  
-// export interface IRemoteTagTreeItem {
-// 	//the tag of an image thats passed to the oras command
-// 	readonly fullTag: string;
-// 	//the node of an image passed to get login credentials
-// 	readonly parent: any;
-// }
-
-
 export function activate(context: vscode.ExtensionContext ) {
 
 	registerCommands();

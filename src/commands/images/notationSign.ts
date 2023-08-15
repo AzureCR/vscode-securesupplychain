@@ -1,35 +1,43 @@
-import { title } from 'process';
 import * as vscode from 'vscode';
 import { logInToDockerCli } from '../registries/logInToDockerCli';
+import { checkCLI } from '../../utils/checkCLI';
+
+const cliName = 'notation';
+const goToNotaryButton = 'Download Notary';
+const orasURL = 'https://notaryproject.dev/docs/installation/cli/';
+const errorMessage = `Notary not found: `;
 
 export async function notationSign(imageTag: any): Promise<void> {
     await logInToDockerCli(imageTag.parent);
-    const choices = [
-        "first name",
-        "last name",
-        "full name"
-    ]
-    var selectedChoice = await vscode.window.showQuickPick(choices, {
-        placeHolder : "Select an option"
-    })
+    var notaryCli = await checkCLI(cliName);
+    if(notaryCli) {
+        const choices = [
+            "first name",
+            "last name",
+            "full name"
+        ];
+        
+        const pick = await vscode.window.showQuickPick(choices, {
+            ignoreFocusOut :true,
+            canPickMany: false,
+        })
 
-    var testing = await vscode.window.showInputBox ( 
-        //prompt : choices,
-    )
-    if (testing === ''){
-        vscode.window.showErrorMessage("Please put your name for the show!")
+        if (pick){
+            const selectedItem = pick;
+            await signingSelection(selectedItem);
+        }else {
+            vscode.window.showInformationMessage("no option selected")
+        }
     } else {
-        vscode.window.showInformationMessage( "Hello " + testing);
-    }
-    //look into
-    vscode.window.visibleNotebookEditors
-    vscode.window.visibleTextEditors
+        vscode.window.showErrorMessage(errorMessage, goToNotaryButton)
+            .then(selection => {
+                if (selection === goToNotaryButton) {
+                    vscode.env.openExternal(vscode.Uri.parse(orasURL));
+                } 
+            });
+     }  
 }
 
-export async function buildSubMenu (imageTag: any) {
-    const choices = [
-        "first name",
-        "last name",
-        "full name"
-    ]
+async function signingSelection (option: any) {
+    vscode.window.showInformationMessage( "Hello " + option);
 }
