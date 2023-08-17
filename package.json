@@ -19,24 +19,18 @@
     "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
-      "submenus": [
-        {
-          "id": "sign.options",
-          "label": "Sign Image"
-        }
-      ],
       "commands": [
         {
           "command": "securesupplychain.showReferrers",
           "title": "Show Referrers"
         },
         {
-          "command": "securesupplychain.allKeys",
-          "title": "Signing keys list"
+          "command": "securesupplychain.defaultKey",
+          "title": "Sign Image"
         },
         {
-          "command": "securesupplychain.defaultKey",
-          "title": "Sign with default Key"
+          "command": "securesupplychain.allKeys",
+          "title": "Set signing key"
         }
       ],
       "menus": {
@@ -47,17 +41,14 @@
             "group": "regs_tag_1_general@7"
           },
           {
-            "submenu": "sign.options",
+            "command": "securesupplychain.defaultKey",
             "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
             "group": "regs_tag_1_general@8"
-          }
-        ],
-        "sign.options":[
-          {
-            "command": "securesupplychain.defaultKey"
           },
           {
-            "command": "securesupplychain.allKeys"
+            "command": "securesupplychain.allKeys",
+            "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
+            "group": "regs_tag_1_general@9"
           }
         ]
       }
