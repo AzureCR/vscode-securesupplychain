@@ -8,7 +8,7 @@ const cliName = 'oras';
 const goToOrasButton = 'Download ORAS';
 const validTag = /^[a-z0-9./_:-]+$/; 
 const orasURL = 'https://oras.land/docs/installation';
-const errorMessage = `oras executable/binary not user's path environment variable. Download ORAS or update path: `;
+const errorMessage = `oras executable/binary not in user's path environment variables. Download ORAS or update path: `;
 
 /**
  * lists referrers for a given tag in a separate vscode window.
