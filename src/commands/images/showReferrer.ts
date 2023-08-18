@@ -21,7 +21,7 @@ export async function showReferrers(imageTag: any): Promise<void> {
 
     if(orasPath) {
         if (validTag.test(imageTag.fullTag)){
-            var exportCommand = `oras discover -o tree "${imageTag.fullTag}"`; 
+            var exportCommand = `${cliName} discover -o tree "${imageTag.fullTag}"`; 
             var output = await execAsync(exportCommand);
 
             if(!output.stderr){
