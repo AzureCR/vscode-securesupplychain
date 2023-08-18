@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { execAsync } from '../../utils/execAsync';
+import { execAsync } from '../utils/execAsync';
 import { window } from 'vscode';
-import { logInToDockerCli } from '../registries/logInToDockerCli';
-import { checkCLI } from '../../utils/checkCLI';
+import { logInToDockerCli } from './registries/logInToDockerCli';
+import { checkCLI } from '../utils/checkCLI';
 
 const cliName = 'oras';
 const goToOrasButton = 'Download ORAS';
@@ -26,8 +26,7 @@ export async function showReferrers(imageTag: any): Promise<void> {
 
             if(!output.stderr){
                 vscode.workspace.openTextDocument({ content: output.stdout }).then(doc => {
-                // Show the newly created document in the editor
-                vscode.window.showTextDocument(doc);
+                vscode.window.showTextDocument(doc); // Show the newly created document in the editor
                 });
             } else {
                 window.showErrorMessage(output.stderr);

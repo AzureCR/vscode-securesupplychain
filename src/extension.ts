@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { selectSigning } from './commands/images/selectSignImage';
+import { selectSigning } from './commands/selectSignImage';
 import { IDockerInstance } from './utils/DockerInstances';
-import { defaultSign } from './commands/images/defaultSignImage';
-import { showReferrers } from './commands/images/showReferrer';
+import { defaultSign } from './commands/defaultSignImage';
+import { showReferrers } from './commands/showReferrer';
 
 export function activate(context: vscode.ExtensionContext ) {
 
@@ -15,13 +15,13 @@ export function activate(context: vscode.ExtensionContext ) {
 		}
 	));	
 
-	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.defaultKey', 
+	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.signImage', 
 	async (remoteTag: IDockerInstance) => {
 		await defaultSign(remoteTag);
 		}
 	));
 
-	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.allKeys', 
+	context.subscriptions.push(vscode.commands.registerCommand('securesupplychain.displayKeys', 
 	async (remoteTag: IDockerInstance) => {
 		await selectSigning(remoteTag);
 		}

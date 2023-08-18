@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { logInToDockerCli } from '../registries/logInToDockerCli';
-import { checkCLI } from '../../utils/checkCLI';
-import { execAsync } from '../../utils/execAsync';
+import { logInToDockerCli } from './registries/logInToDockerCli';
+import { checkCLI } from '../utils/checkCLI';
+import { execAsync } from '../utils/execAsync';
 
 
 const cliName = 'notation';

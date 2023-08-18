@@ -25,11 +25,11 @@
           "title": "Show Referrers"
         },
         {
-          "command": "securesupplychain.defaultKey",
+          "command": "securesupplychain.signImage",
           "title": "Sign Image"
         },
         {
-          "command": "securesupplychain.allKeys",
+          "command": "securesupplychain.displayKeys",
           "title": "Set signing key"
         }
       ],
@@ -41,12 +41,12 @@
             "group": "regs_tag_1_general@7"
           },
           {
-            "command": "securesupplychain.defaultKey",
+            "command": "securesupplychain.signImage",
             "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
             "group": "regs_tag_1_general@8"
           },
           {
-            "command": "securesupplychain.allKeys",
+            "command": "securesupplychain.displayKeys",
             "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
             "group": "regs_tag_1_general@9"
           }
