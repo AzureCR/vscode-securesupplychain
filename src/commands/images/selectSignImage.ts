@@ -4,9 +4,9 @@ import { checkCLI } from '../../utils/checkCLI';
 import { execAsync } from '../../utils/execAsync';
 
 const cliName = 'notation';
-const goToNotaryButton = 'Download Notary';
-const NotaryURL = 'https://notaryproject.dev/docs/installation/cli/';
-const errorMessage = `Notary not found: `;
+const goToNotationButton = 'Download Notation';
+const NotationURL = 'https://notaryproject.dev/docs/installation/cli/';
+const errorMessage = `Notation not found: `;
 
 //sorts the key list string into an array
 async function sortOutput(theArray: any ){
@@ -51,12 +51,12 @@ async function addNewKey() {
 //supports user adding keys and setting default
 export async function selectSigning(imageTag: any): Promise<void> { 
     await logInToDockerCli(imageTag.parent);
-    var notaryCli = await checkCLI(cliName);
-    if (notaryCli){
+    var notationCli = await checkCLI(cliName);
+    if (notationCli){
         var keyList = await execAsync(`${cliName} key list`);
         if (keyList.stdout){
             var keyArray = await sortOutput(keyList);
-            const pick = await vscode.window.showQuickPick( [{label: "Add new Azure key"}, ...keyArray], {
+            const pick = await vscode.window.showQuickPick( [{label: "Add new key from Azure Key Vault"}, ...keyArray], {
                 ignoreFocusOut : true,
                 placeHolder : "Select a key to set as default.",
             });
@@ -83,10 +83,10 @@ export async function selectSigning(imageTag: any): Promise<void> {
             }
         }
     }else {
-        vscode.window.showErrorMessage(errorMessage, goToNotaryButton)
+        vscode.window.showErrorMessage(errorMessage, goToNotationButton)
             .then(selection => {
-                if (selection === goToNotaryButton) {
-                    vscode.env.openExternal(vscode.Uri.parse(NotaryURL));
+                if (selection === goToNotationButton) {
+                    vscode.env.openExternal(vscode.Uri.parse(NotationURL));
                 } 
             });
     }

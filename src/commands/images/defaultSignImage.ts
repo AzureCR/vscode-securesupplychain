@@ -5,9 +5,9 @@ import { execAsync } from '../../utils/execAsync';
 
 
 const cliName = 'notation';
-const goToNotaryButton = 'Download Notary';
-const NotaryURL = 'https://notaryproject.dev/docs/installation/cli/';
-const errorMessage = `Notary not found: `;
+const goToNotationButton = 'Download Notation';
+const NotationURL = 'https://notaryproject.dev/docs/installation/cli/';
+const errorMessage = `Notation not found: `;
 
 //signs image with default key
 export async function defaultSign(imageTag: any): Promise<void> {
@@ -27,10 +27,10 @@ export async function defaultSign(imageTag: any): Promise<void> {
                 }
             });
     } else {
-        vscode.window.showErrorMessage(errorMessage, goToNotaryButton)
+        vscode.window.showErrorMessage(errorMessage, goToNotationButton)
             .then(selection => {
-                if (selection === goToNotaryButton) {
-                    vscode.env.openExternal(vscode.Uri.parse(NotaryURL));
+                if (selection === goToNotationButton) {
+                    vscode.env.openExternal(vscode.Uri.parse(NotationURL));
                 } 
             });
      }  
