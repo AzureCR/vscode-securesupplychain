@@ -8,6 +8,7 @@ const goToNotaryButton = 'Download Notary';
 const NotaryURL = 'https://notaryproject.dev/docs/installation/cli/';
 const errorMessage = `Notary not found: `;
 
+//sorts the key list string into an array
 async function sortOutput(theArray: any ){
     const dataArray = new Array();
     var keyChoices = theArray.stdout.split("\n");
@@ -28,6 +29,7 @@ async function sortOutput(theArray: any ){
     return dataArray;
 }
 
+//adds precreated azure key to notation
 async function addNewKey() { 
     var Key_Name = await vscode.window.showInputBox({prompt: "Input the key name"});
     var AKV_NAME = await vscode.window.showInputBox({prompt: "Input the azure key vault name"});
@@ -46,6 +48,7 @@ async function addNewKey() {
     }    
 }
 
+//supports user adding keys and setting default
 export async function selectSigning(imageTag: any): Promise<void> { 
     await logInToDockerCli(imageTag.parent);
     var notaryCli = await checkCLI(cliName);

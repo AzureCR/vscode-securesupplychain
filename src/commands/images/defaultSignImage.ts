@@ -9,6 +9,7 @@ const goToNotaryButton = 'Download Notary';
 const NotaryURL = 'https://notaryproject.dev/docs/installation/cli/';
 const errorMessage = `Notary not found: `;
 
+//signs image with default key
 export async function defaultSign(imageTag: any): Promise<void> {
     await logInToDockerCli(imageTag.parent);
     var notaryCli = await checkCLI(cliName);
