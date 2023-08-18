@@ -18,7 +18,7 @@ async function sortOutput(theArray: any ){
         const value = values[j];
         if (value.indexOf('*')> -1){
             const keyWithoutAsterisk = value.replace('* ', '');
-            itemObject = {label: keyWithoutAsterisk, description: "DEFAULT"};
+            itemObject = {label: keyWithoutAsterisk, description: "Current default"};
         } else {
             itemObject = {label: value};
         }
@@ -30,7 +30,7 @@ async function sortOutput(theArray: any ){
 
 async function addNewKey() { 
     var Key_Name = await vscode.window.showInputBox({prompt: "Input the key name"});
-    var AKV_NAME = await vscode.window.showInputBox({prompt: "Input the key vault name"});
+    var AKV_NAME = await vscode.window.showInputBox({prompt: "Input the azure key vault name"});
     if (Key_Name == undefined) {
         return; // Exit the function
     } else if (AKV_NAME == undefined){

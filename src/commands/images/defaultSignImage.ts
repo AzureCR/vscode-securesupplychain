@@ -20,7 +20,7 @@ export async function defaultSign(imageTag: any): Promise<void> {
             await vscode.window.withProgress(progressOptions, async () => {
                 var errOut = await execAsync(`${cliName} sign ${imageTag.fullTag}`); //TODO: referrence image by digest not tag
                 if(errOut.stdout){
-                    vscode.window.showInformationMessage("image signed!!")
+                    vscode.window.showInformationMessage("Image signed")
                 }else{
                     vscode.window.showErrorMessage(errOut.stderr)
                 }
