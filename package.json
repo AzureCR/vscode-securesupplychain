@@ -30,7 +30,7 @@
         },
         {
           "command": "securesupplychain.displayKeys",
-          "title": "Set signing key"
+          "title": "Set the Default Signing Key…"
         }
       ],
       "menus": {
@@ -38,17 +38,17 @@
           {
             "command": "securesupplychain.showReferrers",
             "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
-            "group": "regs_tag_1_general@7"
+            "group": "regs_tag_3_verify@1"
           },
           {
             "command": "securesupplychain.signImage",
             "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
-            "group": "regs_tag_1_general@8"
+            "group": "regs_tag_4_signing@1"
           },
           {
             "command": "securesupplychain.displayKeys",
             "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
-            "group": "regs_tag_1_general@9"
+            "group": "regs_tag_4_signing@2"
           }
         ]
       },
