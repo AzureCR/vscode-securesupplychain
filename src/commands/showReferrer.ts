@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { execAsync } from '../utils/execAsync';
 import { window } from 'vscode';
 import { logInToDockerCli } from './registries/logInToDockerCli';
-import { checkCLI } from '../utils/checkCLI';
+import { checkCli } from '../utils/checksCli';
 
 const cliName = 'oras';
 const goToOrasButton = 'Download ORAS';
@@ -17,7 +17,7 @@ export async function showReferrers(imageTag: any): Promise<void> {
 
     await logInToDockerCli(imageTag.parent)
 
-    var orasPath = await checkCLI(cliName);
+    var orasPath = await checkCli(cliName);
 
     if(orasPath) {
         if (validTag.test(imageTag.fullTag)){

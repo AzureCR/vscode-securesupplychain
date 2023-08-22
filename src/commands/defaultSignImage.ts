@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { logInToDockerCli } from './registries/logInToDockerCli';
-import { checkCLI } from '../utils/checkCLI';
+import { checkCli } from '../utils/checksCli';
 import { execAsync } from '../utils/execAsync';
 
 
@@ -12,18 +12,18 @@ const errorMessage = `Notation not found: `;
 //signs image with default key
 export async function defaultSign(imageTag: any): Promise<void> {
     await logInToDockerCli(imageTag.parent);
-    var notaryCli = await checkCLI(cliName);
+    var notaryCli = await checkCli(cliName);
     if(notaryCli) {
             const progressOptions: vscode.ProgressOptions = {
                 location: vscode.ProgressLocation.Notification,
                 title: vscode.l10n.t('Signing...'),
             };
             await vscode.window.withProgress(progressOptions, async () => {
-                var errOut = await execAsync(`${cliName} sign ${imageTag.fullTag}`); //TODO: referrence image by digest not tag
-                if(errOut.stdout){
+                var signSuccess = await execAsync(`${cliName} sign ${imageTag.fullTag}`); //TODO: referrence image by digest not tag
+                if(signSuccess.stdout){
                     vscode.window.showInformationMessage("Image signed")
                 }else{
-                    vscode.window.showErrorMessage(errOut.stderr)
+                    vscode.window.showErrorMessage(signSuccess.stderr)
                 }
             });
     } else {
