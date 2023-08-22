@@ -8,10 +8,11 @@ const goToNotationButton = 'Download Notation';
 const NotationURL = 'https://notaryproject.dev/docs/installation/cli/';
 const errorMessage = `Notation not found: `;
 
-//transforms the key list string into an array of objects
+
 /**
  * Parsing the string is necessary because the current notation output
  * is a tabular string, thus not formatted for immediate use. 
+ * Thus the function changes the key list string into an array of objects
  */
 async function sortOutput(Key_String_Values: string ){
     //if the key_string_values is empty
@@ -38,34 +39,59 @@ async function sortOutput(Key_String_Values: string ){
 
 //adds precreated azure key to notation
 async function addNewKey() { 
+
+    const prompt: boolean = vscode.workspace.getConfiguration("securesupplychain").get('promptForKeyVersion', false);
+
     var key_Name = await vscode.window.showInputBox({prompt: "Input the key name"});
-    //If the user escapes or enters an empty string in the inputbox, then exit the function
-    if(key_Name == undefined || key_Name == ''){
-        return;
-    }
-
-    var akv_Name = await vscode.window.showInputBox({prompt: "Input the azure key vault name"});
-    if (akv_Name == undefined ||  akv_Name == '') {
-        return; // Exit the function
-    }
-
-    const progressOptions: vscode.ProgressOptions = {
-        location: vscode.ProgressLocation.Notification,
-        title: vscode.l10n.t('Adding key...'),
-    };
-    await vscode.window.withProgress(progressOptions, async () => {
-        var key_ID = await execAsync(`az keyvault certificate show -n ${key_Name} --vault-name ${akv_Name} --query "kid" -o tsv`);
-        if(key_ID.stdout){
-            var output = await execAsync(`${cliName} key add --plugin azure-kv --id ${key_ID.stdout} ${key_Name}`);
-            if(output.stdout){
-                vscode.window.showInformationMessage("Key added");
-            }else{ 
-                vscode.window.showErrorMessage(output.stderr);
-            }
-        } else{
-            vscode.window.showErrorMessage("A key id was not found for the provided inputs. Please double check spelling.");
+        //If the user escapes or enters an empty string in the inputbox, then exit the function
+        if(key_Name == undefined || key_Name == ''){
+            return;
         }
-    });      
+
+    if(prompt){
+        var key_ID = await vscode.window.showInputBox({prompt: "Input the Azure Key ID"});
+        if (key_ID == undefined ||  key_ID == '') {
+            return; // Exit the function
+        }
+
+        const progressOptions: vscode.ProgressOptions = {
+            location: vscode.ProgressLocation.Notification,
+            title: vscode.l10n.t('Adding key...'),
+        };
+        await vscode.window.withProgress(progressOptions, async () => {
+                var output = await execAsync(`${cliName} key add --plugin azure-kv --id ${key_ID} ${key_Name}`);
+                if(output.stdout){
+                    vscode.window.showInformationMessage("Key added");
+                }else{ 
+                    vscode.window.showErrorMessage(output.stderr);
+                }            
+        });  
+
+    }else{
+
+        var akv_Name = await vscode.window.showInputBox({prompt: "Input the azure key vault name"});
+        if (akv_Name == undefined ||  akv_Name == '') {
+            return; // Exit the function
+        }
+
+        const progressOptions: vscode.ProgressOptions = {
+            location: vscode.ProgressLocation.Notification,
+            title: vscode.l10n.t('Adding key...'),
+        };
+        await vscode.window.withProgress(progressOptions, async () => {
+            var cli_key_ID = await execAsync(`az keyvault certificate show -n ${key_Name} --vault-name ${akv_Name} --query "kid" -o tsv`);
+            if(cli_key_ID.stdout){
+                var output = await execAsync(`${cliName} key add --plugin azure-kv --id ${cli_key_ID.stdout} ${key_Name}`);
+                if(output.stdout){
+                    vscode.window.showInformationMessage("Key added");
+                }else{ 
+                    vscode.window.showErrorMessage(output.stderr);
+                }
+            } else{
+                vscode.window.showErrorMessage("A key id was not found for the provided inputs. Please double check spelling.");
+            }
+        });  
+    }    
 }
 
 //supports user adding keys and setting default

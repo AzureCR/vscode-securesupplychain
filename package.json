@@ -51,6 +51,16 @@
             "group": "regs_tag_1_general@9"
           }
         ]
+      },
+      "configuration" : {
+          "title": "Signing Key Version",
+          "properties": {
+            "securesupplychain.promptForKeyVersion": {
+              "type": "boolean",
+              "default" : false,
+              "description": "Specifies the option of selecting signing key versions"
+            }
+          }
       }
     },
     "scripts": {
