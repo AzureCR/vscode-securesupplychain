@@ -14,26 +14,27 @@ const errorMessage = `Notation not found: `;
  * is a tabular string, thus not formatted for immediate use. 
  * Thus the function changes the key list string into an array of objects
  */
-async function sortOutput(Key_String_Values: string ){
+export async function sortOutput(Key_String_Values: string ){
     //if the key_string_values is empty
     if(Key_String_Values == ""){
         return "No current keys in notation";
     }else {
         var dataArray = new Array();
+        var defaultKey = '';
         var keyChoices = Key_String_Values.split("\n");
         for (let i = 1; i < keyChoices.length; i++) { 
             var values = keyChoices[i].trim().split(/ {2,} /); 
             var itemObject; 
             var value = values[0];
             if (value.indexOf('*')> -1){
-                const keyWithoutAsterisk = value.replace('* ', '');
-                itemObject = {label: keyWithoutAsterisk, description: "Current default"};
+                defaultKey = value.replace('* ', '');
+                itemObject = {label: defaultKey, description: "Current default"};
             } else {
                 itemObject = {label: value};
             }  
             dataArray.push(itemObject);
         }
-        return dataArray;
+        return [dataArray, defaultKey];
     }
 }
 
@@ -42,7 +43,7 @@ async function addNewKey() {
 
     const prompt: boolean = vscode.workspace.getConfiguration("securesupplychain").get('promptForKeyVersion', false);
 
-    var key_Name = await vscode.window.showInputBox({prompt: "Input the key name"});
+    var key_Name = await vscode.window.showInputBox({prompt: "Input the cert name"});
         //If the user escapes or enters an empty string in the inputbox, then exit the function
         if(key_Name == undefined || key_Name == ''){
             return;
@@ -104,7 +105,7 @@ export async function selectSigning(imageTag: any): Promise<void> {
         if (keyList.stderr){
             vscode.window.showErrorMessage(keyList.stderr);
         } else {
-            var keyArray = await sortOutput(keyList.stdout);
+            var [keyArray] = await sortOutput(keyList.stdout);
             const pick = await vscode.window.showQuickPick( [{label: "Add new key from Azure Key Vault"}, ...keyArray], {
                 ignoreFocusOut : true,
                 placeHolder : "Select a key to set as default.",
@@ -116,7 +117,7 @@ export async function selectSigning(imageTag: any): Promise<void> {
             }else if (pick) {
                 const progressOptions: vscode.ProgressOptions = {
                     location: vscode.ProgressLocation.Notification,
-                    title: vscode.l10n.t('Setting key as default...'),
+                    title: vscode.l10n.t(`Setting ${pick.label} as default key...`),
                 };
                 await vscode.window.withProgress(progressOptions, async () => {
                     const selectedItem = pick.label;
@@ -127,8 +128,6 @@ export async function selectSigning(imageTag: any): Promise<void> {
                         vscode.window.showErrorMessage(setSuccess.stderr);
                     }
                 });
-            }else {
-                vscode.window.showInformationMessage("no key selected");
             }
         }
     }else {

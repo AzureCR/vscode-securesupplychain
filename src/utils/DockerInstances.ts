@@ -7,4 +7,5 @@ export interface IDockerInstance {
 	readonly fullTag: string;
 	//the node of an image passed to get login credentials
 	readonly parent: any;
+	readonly tag : string;
 }
