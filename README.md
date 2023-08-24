@@ -19,6 +19,14 @@ Located at [vscode-docker](https://github.com/microsoft/vscode-docker/tree/main/
 ## Adding New Capabilities to the Existing Docker VS Code Extension
 The secondary extension introduces features enhancing user experience by providing image referrer information and enabling image signing. Referrer data is obtained using the ORAS CLI, and image signing leverages the Notation CLI.
 
+### Setting up the features:
+- Prerequisites
+    - Download ORAS Library
+    - Download Azure CLI
+    - Download Notation CLI
+    - Install Docker extension and Docker Desktop
+    - Add ORAS directory to PATH environment variable.
+
 ### User Experience:
 **Right-Click Interaction:**
 1. Users navigate to "Registries" panel in Docker View of VS Code.
@@ -52,15 +60,6 @@ When right clicking on the tag image select 'Show Referrer' in the menus option.
  - When an image has no referrers the tree only shows the root image. This is confusing to see as a user and needs to be fixed to instead tell the user no referrers were found for this image.
  - Referrence an image by it's digest instead of tag when executing cli commands.
 
-### Setting up the feature:
-- Prerequisites
-    - Download ORAS Library
-    - Download Azure CLI
-    - Download Notation CLI
-    - Install Docker extension and Docker Desktop
-    - Add ORAS directory to PATH environment variable.
-
-    
 
 ### Coding the features:
 -   To implement the features, we replicated the current Docker [commands](https://github.com/microsoft/vscode-docker/tree/main/src/commands) structure for registry items. Following a clear pattern: defining the command seen in the menu, handling the event triggering, and executing the CLI command. Instead of relying on the Docker CLI, the features will leverage the ORAS CLI or the Notation CLI.
