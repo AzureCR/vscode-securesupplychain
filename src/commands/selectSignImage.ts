@@ -24,16 +24,27 @@ export async function sortOutput(keyStringValues: string ){
         // eslint-disable-next-line @typescript-eslint/no-array-constructor
         const dataArray = new Array();
         let defaultKey = '';
-        const keyChoices = keyStringValues.split("\n");
+        /** Unedited keyStringValues
+         * NAME        PLUGIN
+         * keyanna     akv-plugin
+         */
+        const keyChoices = keyStringValues.split("\n"); 
+        /** After split of tabs
+         * ["NAME      PLUGIN", "keyanna      akv-plugin"]
+         */
         for (let i = 1; i < keyChoices.length; i++) { 
+            /** triming and spliting the array strings, ignoring headers
+             * ['keyanna', 'akv-plugin']
+             */
             const values = keyChoices[i].trim().split(/ {2,} /); 
             let itemObject; 
-            const value = values[0];
-            if (value.indexOf('*')> -1){
-                defaultKey = value.replace('* ', '');
+            //only taking the name of the key/cert
+            const signingKeyName = values[0];
+            if (signingKeyName.indexOf('*')> -1){
+                defaultKey = signingKeyName.replace('* ', '');
                 itemObject = {label: defaultKey, description: "Current default"};
             } else {
-                itemObject = {label: value};
+                itemObject = {label: signingKeyName};
             }  
             dataArray.push(itemObject);
         }
