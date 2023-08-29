@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import * as vscode from 'vscode';
 import { loginToDockerCli } from './registries/logInToDockerCli';

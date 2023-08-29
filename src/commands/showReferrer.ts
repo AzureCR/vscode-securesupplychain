@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import * as vscode from 'vscode';
 import { execAsync } from '../utils/execAsync';
@@ -16,7 +17,7 @@ const errorMessage = "oras executable/binary not in user's path environment vari
  */
 export async function showReferrers(imageTag: any): Promise<void> {
 
-    await loginToDockerCli(imageTag.parent)
+    await loginToDockerCli(imageTag.parent);
 
     const orasPath = await checkCli(cliName);
 
