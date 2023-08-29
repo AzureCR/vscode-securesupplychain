@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import * as vscode from 'vscode';
 import { loginToDockerCli } from './registries/logInToDockerCli';
@@ -112,7 +113,7 @@ export async function selectSigning(imageTag: any): Promise<void> {
                 ignoreFocusOut : true,
                 placeHolder : "Select a key to set as default.",
             });
-            if (pick == undefined){ //user escapes the selection
+            if (pick === undefined){ //user escapes the selection
                 return;
             }else if(pick.label.indexOf('Add new') > -1){ //if user picks to add a new key
                 await addNewKey();
