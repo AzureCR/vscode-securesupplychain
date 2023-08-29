@@ -9,7 +9,7 @@ interface IAuthentication {
     getDockerCliCredentials : () => any; 
 }
 
-export async function logInToDockerCli(imageTag : any) {
+export async function loginToDockerCli(imageTag : any) {
 
     /**
      *  https://github.com/microsoft/vscode-docker/blob/main/src/commands/registries/logInToDockerCli.ts
@@ -20,10 +20,10 @@ export async function logInToDockerCli(imageTag : any) {
      * the node cachedProvider and node authContext. These returned items are then run through the Dockers logInToDockerCli as
      * the login credentials.
      */
-    let loginProvider  : IAuthentication = {
+    const loginProvider : IAuthentication = {
         getDockerCliCredentials : async () => {
-            let node = imageTag.parent;
+            const node = imageTag.parent;
             return await node.authHelper.getDockerCliCredentials(node.cachedProvider, node.authContext);
         }}; 
-	    await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', loginProvider);
+	await vscode.commands.executeCommand('vscode-docker.registries.logInToDockerCli', loginProvider);
 }

@@ -33,7 +33,6 @@ export async function execAsync(command: string, options?: cp.ExecOptions & { st
             }
         });
         stdoutIntermediate.pipe(stdoutFinal);
-
         stderrIntermediate = new stream.PassThrough();
         stderrIntermediate.on('data', (chunk: Buffer) => {
             try {

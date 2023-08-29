@@ -1,87 +1,87 @@
 {
     "extensionDependencies": [
-      "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker"
     ],
     "dependencies": {
-      "@microsoft/vscode-container-client": "^0.1.0",
-      "vscode-jsonrpc": "^8.1.0"
+        "@microsoft/vscode-container-client": "^0.1.0",
+        "vscode-jsonrpc": "^8.1.0"
     },
     "name": "securesupplychain",
     "displayName": "securesupplychain",
     "description": "securesupplychain features",
     "version": "0.0.1",
     "engines": {
-      "vscode": "^1.80.0"
+        "vscode": "^1.80.0"
     },
     "categories": [
-      "Other"
+        "Other"
     ],
     "activationEvents": [],
     "main": "./out/extension.js",
     "contributes": {
-      "commands": [
-        {
-          "command": "securesupplychain.showReferrers",
-          "title": "Show Referrers"
-        },
-        {
-          "command": "securesupplychain.signImage",
-          "title": "Sign Image"
-        },
-        {
-          "command": "securesupplychain.displayKeys",
-          "title": "Set the Default Signing Key…"
-        }
-      ],
-      "menus": {
-        "view/item/context": [
-          {
-            "command": "securesupplychain.showReferrers",
-            "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
-            "group": "regs_tag_3_verify@1"
-          },
-          {
-            "command": "securesupplychain.signImage",
-            "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
-            "group": "regs_tag_4_signing@1"
-          },
-          {
-            "command": "securesupplychain.displayKeys",
-            "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
-            "group": "regs_tag_4_signing@2"
-          }
-        ]
-      },
-      "configuration" : {
-          "title": "Signing Key Version",
-          "properties": {
-            "securesupplychain.promptForKeyVersion": {
-              "type": "boolean",
-              "default" : false,
-              "description": "Specifies the option of selecting signing key versions"
+        "commands": [
+            {
+                "command": "securesupplychain.showReferrers",
+                "title": "Show Referrers"
+            },
+            {
+                "command": "securesupplychain.signImage",
+                "title": "Sign Image"
+            },
+            {
+                "command": "securesupplychain.displayKeys",
+                "title": "Set the Default Signing Key…"
             }
-          }
-      }
+        ],
+        "menus": {
+            "view/item/context": [
+                {
+                    "command": "securesupplychain.showReferrers",
+                    "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
+                    "group": "regs_tag_3_verify@1"
+                },
+                {
+                    "command": "securesupplychain.signImage",
+                    "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
+                    "group": "regs_tag_4_signing@1"
+                },
+                {
+                    "command": "securesupplychain.displayKeys",
+                    "when": "view == dockerRegistries && viewItem == azure;DockerV2;Tag;",
+                    "group": "regs_tag_4_signing@2"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Signing Key Version",
+            "properties": {
+                "securesupplychain.promptForKeyVersion": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Specifies the option of selecting signing key versions"
+                }
+            }
+        }
     },
     "scripts": {
-      "vscode:prepublish": "npm run compile",
-      "compile": "tsc -p ./",
-      "watch": "tsc -watch -p ./",
-      "pretest": "npm run compile && npm run lint",
-      "lint": "eslint src --ext ts",
-      "test": "node ./out/test/runTest.js"
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "pretest": "npm run compile && npm run lint",
+        "lint": "eslint src --ext ts",
+        "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-      "@types/glob": "^8.1.0",
-      "@types/mocha": "^10.0.1",
-      "@types/node": "20.2.5",
-      "@types/vscode": "^1.80.0",
-      "@typescript-eslint/eslint-plugin": "^5.59.8",
-      "@typescript-eslint/parser": "^5.59.8",
-      "@vscode/test-electron": "^2.3.2",
-      "eslint": "^8.41.0",
-      "glob": "^8.1.0",
-      "mocha": "^10.2.0",
-      "typescript": "^5.1.3"
+        "@types/glob": "^8.1.0",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "20.2.5",
+        "@types/vscode": "^1.80.0",
+        "@typescript-eslint/eslint-plugin": "^5.62.0",
+        "@typescript-eslint/parser": "^5.62.0",
+        "@vscode/test-electron": "^2.3.2",
+        "eslint": "^8.41.0",
+        "glob": "^8.1.0",
+        "mocha": "^10.2.0",
+        "typescript": "^5.2.2"
     }
-  }
+}

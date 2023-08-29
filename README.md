@@ -58,7 +58,7 @@ When right clicking on the tag image select 'Show Referrer' in the menus option.
 - Once the user has keys and a default key set up then they can sign an image using the `Sign Image` in the menu option.
 #### To Do:
  - When an image has no referrers the tree only shows the root image. This is confusing to see as a user and needs to be fixed to instead tell the user no referrers were found for this image.
- - Referrence an image by it's digest instead of tag when executing cli commands.
+ - Reference an image by its digest instead of tag when executing cli commands.
 
 
 ### Coding the features:

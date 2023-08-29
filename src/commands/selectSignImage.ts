@@ -1,12 +1,13 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import * as vscode from 'vscode';
-import { logInToDockerCli } from './registries/logInToDockerCli';
+import { loginToDockerCli } from './registries/logInToDockerCli';
 import { checkCli } from '../utils/checksCli';
 import { execAsync } from '../utils/execAsync';
 
-const cliName = 'notation';
-const goToNotationButton = 'Download Notation';
-const NotationURL = 'https://notaryproject.dev/docs/installation/cli/';
-const errorMessage = `Notation not found: `;
+const cliName = "notation";
+const goToNotationButton = "Download Notation";
+const NotationURL = "https://notaryproject.dev/docs/installation/cli/";
+const errorMessage = "Notation not found: ";
 
 
 /**
@@ -14,18 +15,19 @@ const errorMessage = `Notation not found: `;
  * is a tabular string, thus not formatted for immediate use. 
  * Thus the function changes the key list string into an array of objects
  */
-export async function sortOutput(Key_String_Values: string ){
+export async function sortOutput(keyStringValues: string ){
     //if the key_string_values is empty
-    if(Key_String_Values == ""){
+    if(keyStringValues === ""){
         return "No current keys in notation";
     }else {
-        var dataArray = new Array();
-        var defaultKey = '';
-        var keyChoices = Key_String_Values.split("\n");
+        // eslint-disable-next-line @typescript-eslint/no-array-constructor
+        const dataArray = new Array();
+        let defaultKey = '';
+        const keyChoices = keyStringValues.split("\n");
         for (let i = 1; i < keyChoices.length; i++) { 
-            var values = keyChoices[i].trim().split(/ {2,} /); 
-            var itemObject; 
-            var value = values[0];
+            const values = keyChoices[i].trim().split(/ {2,} /); 
+            let itemObject; 
+            const value = values[0];
             if (value.indexOf('*')> -1){
                 defaultKey = value.replace('* ', '');
                 itemObject = {label: defaultKey, description: "Current default"};
@@ -43,24 +45,24 @@ async function addNewKey() {
 
     const prompt: boolean = vscode.workspace.getConfiguration("securesupplychain").get('promptForKeyVersion', false);
 
-    var key_Name = await vscode.window.showInputBox({prompt: "Input the cert name"});
+    const keyName = await vscode.window.showInputBox({prompt: "Input the cert name"});
         //If the user escapes or enters an empty string in the inputbox, then exit the function
-        if(key_Name == undefined || key_Name == ''){
+        if(keyName === undefined || keyName === ''){
             return;
         }
 
     if(prompt){
-        var key_ID = await vscode.window.showInputBox({prompt: "Input the Azure Key ID"});
-        if (key_ID == undefined ||  key_ID == '') {
-            return; // Exit the function
+        const keyID = await vscode.window.showInputBox({prompt: "Input the Azure Key ID"});
+        if (keyID === undefined ||  keyID === '') {
+            return; 
         }
 
         const progressOptions: vscode.ProgressOptions = {
             location: vscode.ProgressLocation.Notification,
-            title: vscode.l10n.t('Adding key...'),
+            title: vscode.l10n.t("Adding key..."),
         };
         await vscode.window.withProgress(progressOptions, async () => {
-                var output = await execAsync(`${cliName} key add --plugin azure-kv --id ${key_ID} ${key_Name}`);
+                const output = await execAsync(`${cliName} key add --plugin azure-kv --id ${keyID} ${keyName}`);
                 if(output.stdout){
                     vscode.window.showInformationMessage("Key added");
                 }else{ 
@@ -70,19 +72,19 @@ async function addNewKey() {
 
     }else{
 
-        var akv_Name = await vscode.window.showInputBox({prompt: "Input the azure key vault name"});
-        if (akv_Name == undefined ||  akv_Name == '') {
-            return; // Exit the function
+        const akvName = await vscode.window.showInputBox({prompt: "Input the azure key vault name"});
+        if (akvName === undefined ||  akvName === '') {
+            return; 
         }
 
         const progressOptions: vscode.ProgressOptions = {
             location: vscode.ProgressLocation.Notification,
-            title: vscode.l10n.t('Adding key...'),
+            title: vscode.l10n.t("Adding key..."),
         };
         await vscode.window.withProgress(progressOptions, async () => {
-            var cli_key_ID = await execAsync(`az keyvault certificate show -n ${key_Name} --vault-name ${akv_Name} --query "kid" -o tsv`);
-            if(cli_key_ID.stdout){
-                var output = await execAsync(`${cliName} key add --plugin azure-kv --id ${cli_key_ID.stdout} ${key_Name}`);
+            const cliKeyID = await execAsync(`az keyvault certificate show -n ${keyName} --vault-name ${akvName} --query "kid" -o tsv`);
+            if(cliKeyID.stdout){
+                const output = await execAsync(`${cliName} key add --plugin azure-kv --id ${cliKeyID.stdout} ${keyName}`);
                 if(output.stdout){
                     vscode.window.showInformationMessage("Key added");
                 }else{ 
@@ -97,15 +99,15 @@ async function addNewKey() {
 
 //supports user adding keys and setting default
 export async function selectSigning(imageTag: any): Promise<void> { 
-    await logInToDockerCli(imageTag.parent);
-    var notationCli = await checkCli(cliName);
+    await loginToDockerCli(imageTag.parent);
+    const notationCli = await checkCli(cliName);
     if (notationCli){
-        var keyList = await execAsync(`${cliName} key list`);
+        const keyList = await execAsync(`${cliName} key list`);
         //Note that 'notation key list' does not usually error out and will always return an output string.
         if (keyList.stderr){
             vscode.window.showErrorMessage(keyList.stderr);
         } else {
-            var [keyArray] = await sortOutput(keyList.stdout);
+            const [keyArray] = await sortOutput(keyList.stdout);
             const pick = await vscode.window.showQuickPick( [{label: "Add new key from Azure Key Vault"}, ...keyArray], {
                 ignoreFocusOut : true,
                 placeHolder : "Select a key to set as default.",
@@ -121,7 +123,7 @@ export async function selectSigning(imageTag: any): Promise<void> {
                 };
                 await vscode.window.withProgress(progressOptions, async () => {
                     const selectedItem = pick.label;
-                    var setSuccess = await execAsync(`${cliName} key set --default "${selectedItem}"`);
+                    const setSuccess = await execAsync(`${cliName} key set --default "${selectedItem}"`);
                     if(setSuccess.stdout){
                         vscode.window.showInformationMessage(`${selectedItem} is now default key`);
                     }else{
