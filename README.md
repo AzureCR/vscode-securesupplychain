@@ -1,43 +1,74 @@
 # vscode-securesupplychain
 vscode extension for container related secure supply chain tools
+
+## Current Docker Extension Capabilities with Registries
+The VS-code-Docker extension uses the Docker V2 API to facilitate the distribution of images to the Docker engine. The extension interacts with instances of the Docker registry, which is a service to manage information about docker images and enable their distribution. The API is assigned/called in the [RegistryApi.ts](https://github.com/microsoft/vscode-docker/tree/main/src/tree/registries/all). The current extension displays the repositories to which the user has access to and the tags within them as a tree view in the Registries category.
+
+![Alt text](<resources/readme/currentDocker.png>)
+
+How the current extension shows the registries:
+Located at [vscode-docker](https://github.com/microsoft/vscode-docker/tree/main/src/tree/registries).
+-	Accessing Repositories as Tree View: The extension accesses Docker registries using the Docker V2 API. It allows users to view the repositories available to them in a convenient tree view format under the "Registries" group. This tree view presents a hierarchical structure of repositories and their corresponding image tags.
+-   CLI Commands: The Docker extension offers various commands to manage Docker-related tasks. These commands are available in the extension's source code, commands recognized in the Registries group can be found [here](https://github.com/microsoft/vscode-docker/tree/main/src/commands/registries). These CLI commands allow users to perform operations such as pull image, delete image, pull repository, and delete registry right from within Visual Studio Code.
+
+**Limitations:**
+- No display of image referrers.
+- No support for image signing.
+
+
 ## Adding New Capabilities to the Existing Docker VS Code Extension
-The expanded extension will create a text document within vscode listing an image's referrers. Accessing the referrers is done through the ORAS CLI.
+The secondary extension introduces features enhancing user experience by providing image referrer information and enabling image signing. Referrer data is obtained using the ORAS CLI, and image signing leverages the Notation CLI.
+
+### Setting up the features:
+- Prerequisites
+    - Download ORAS Library
+    - Download Azure CLI
+    - Download Notation CLI
+    - Install Docker extension and Docker Desktop
+    - Add ORAS directory to PATH environment variable.
 
 ### User Experience:
-#### On right click
-Users can access the feature by first navigating to the Registries panel within the Docker View of vscode. 
+**Right-Click Interaction:**
+1. Users navigate to "Registries" panel in Docker View of VS Code.
+2. Right-click a tag image to access menu options, including new features.
 
 ![Alt text](<resources/readme/commandGuide.png>)
 
-Then right click on the tag image. Select 'Show Referrer' in the menus option.
+menu
 
-![Alt text](resources/readme/showReferrerScreenshot.png)
+![Alt text](<./resources/readme/newDockerMenu.png>)
 
-The user is logged into the docker cli and the command `oras discover -o tree $IMAGE` is then executed and the referrer output tree is put into a text document to be read by the user.
+Once an action is selected the user is logged into the docker cli and the command is then executed.
 
-![Alt text](resources/readme/textDoc.png)
+### Show Referrers
 
+When right clicking on the tag image select 'Show Referrer' in the menus option. The command `oras discover -o tree $IMAGE` is then executed and the referrer output tree is put into a text document to be read by the user.
+
+![Alt text](<./resources/readme/textDoc.png>)
+
+### Signing a image steps
+- Navigate to the menu option `Set the Default Signing Key…` to see the available keys for signing an image. The user interface appears as this:
+
+![Alt text](<./resources/readme/setKeyDefault.png>)
+- The current default is shown as a description next to the key name. To change the default select an available key and the command `notation key set --default $KEY` is executed and the default signing key is updated.
+- There is also the option to `Add new key from Azure Key Vault`. When the user selects this they are taken through a dialog to input the new key name and the name of the AKV that they want to add. There is a setting option to instead input the key ID instead of the AKV name so that if the user wants a certain version of a key instead of the latest they have that option. The setting looks like this: 
+
+![Alt text](<./resources/readme/keyVersionSetting.png>)
+
+- Once the user has keys and a default key set up then they can sign an image using the `Sign Image` in the menu option.
 #### To Do:
  - When an image has no referrers the tree only shows the root image. This is confusing to see as a user and needs to be fixed to instead tell the user no referrers were found for this image.
+ - Reference an image by its digest instead of tag when executing cli commands.
 
-### Setting up the feature:
-- Prerequisites
-    - Download ORAS Library
-    - Have Docker extension and Docker Desktop installed
-    - The directory which contains the oras executable/binary should be added to the user's path environment variable.
 
-### Coding the feature:
--   To implement the image referrer feature, we will replicate the current Docker [commands](https://github.com/microsoft/vscode-docker/tree/main/src/commands) structure for registry items. The coding will follow a clear pattern: defining the command seen in the menu, handling the event triggering, and executing the CLI command. Instead of relying on the Docker CLI, this feature will leverage the ORAS CLI to retrieve image referrers.
-    - The ORAS CLI already has a built-in referrer function, which can be invoked using the command: `oras discover -o tree $IMAGE`. When executed, this command generates a graph of artifacts, with the signature and documentation viewed as children of the container image.
-    ![Alt text](resources/readme/CLIExample.png)
-- We check that oras is downloaded through sending a dummy command. If the command errors we responsed with an error message stating `oras executable/binary not user's path environment variable. Download ORAS or update path:` and providing a link to the oras installation page.
+### Coding the features:
+-   To implement the features, we replicated the current Docker [commands](https://github.com/microsoft/vscode-docker/tree/main/src/commands) structure for registry items. Following a clear pattern: defining the command seen in the menu, handling the event triggering, and executing the CLI command. Instead of relying on the Docker CLI, the features will leverage the ORAS CLI or the Notation CLI.
+- We check that CLI's are downloaded through sending a dummy command. If the command errors we responsed with an error message stating the cli isn't downloaded or set up in the enviorment variables and provide a link to their installation page.
 - For authentication the Docker extension's logInToDockerCli function was imported into the feature and we coded a replica of the getDockerCliCredentials function so that the login credentials are passed accordingly.
-- Then the oras discover command is executed with the selected image and once successful a text document with the referrer treeview is generated as a vscode window.
 
 ### Design:
 - It will be implemented as a secondary extension dependant on the VScode Docker extension. 
-- The secondary extension will activated at the following event: when the user clicks on the "Show Referrers" menus option.
-- The referrer list will then be presented as a text document displaying the output of the oras discover command.
+- The secondary extension is available when when the user right clicks on an image.
 
 ## Known Issues
 
